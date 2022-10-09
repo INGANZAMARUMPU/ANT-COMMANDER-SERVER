@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'app'
 ]
 
@@ -57,6 +58,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ANT_COMMANDER.wsgi.application'
+ASGI_APPLICATION = 'ANT_COMMANDER.asgi.application'
 
 
 # Database
