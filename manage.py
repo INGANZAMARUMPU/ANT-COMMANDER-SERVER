@@ -17,7 +17,7 @@ def main():
         ) from exc
     command = sys.argv
     if len(command) == 1:
-        command.append("runserver")
+        command += ["runserver", "0.0.0.0:8000"]
     execute_from_command_line(command)
 
 
