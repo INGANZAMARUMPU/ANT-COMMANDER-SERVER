@@ -1,5 +1,4 @@
-pour executer cette application il vous faut un certificat https.
-voici les commandes powershell pour creer un certificat sous windows
+pour executer cette application il vous faut un certificat https car chrome n'accepte pas par defaut l'ouverture d'un camera sur une connexion http qui n'est pas le *localhost* et les websockets du *https* exigent un backend en *wss*. Voici les commandes powershell pour creer un certificat https sous windows
 
 ```shell
 # installation de choco
@@ -16,6 +15,9 @@ mkcert -cert-file cert.pem -key-file key.pem localhost 192.168.43.135
 Au lieu de demarrer l'application avec ```manage.py```, vous allez utiliser ```Daphne```
 
 ```bash
+# installation de daphne
 python pip install daphne
+
+# execution au port 8000 avec les certificats https
 daphne -e ssl:8000:privateKey=cert.pem:certKey=key.pem ANT_COMMANDER.asgi:application
 ```
