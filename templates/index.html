@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <title>ANT ROBOT COMMANDER</title>
+    <link href="{% static 'app.css' %}" rel="preload" as="style">
+    <link href="{% static 'app.js' %}" rel="preload" as="script">
+    <link href="{% static 'chunk-vendors.js' %}" rel="preload" as="script">
+    <link href="{% static 'app.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <noscript>
+        <strong>
+            We're sorry but microfinance_ui doesn't work properly without JavaScript enabled. Please enable it to continue.
+        </strong>
+    </noscript>
+    <div id="app">
+        <img class="nothing" src="{% static 'nothing.gif' %}"/>
+    </div>
+    <style type="text/css">
+        .nothing{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            margin: auto;
+        }
+    </style>
+    <script src="{% static '/chunk-vendors.js' %}"></script>
+    <script src="{% static '/app.js' %}"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eruda-dom"></script>
+    <script>
+        eruda.init();
+        eruda.add(erudaDom);
+    </script>
+</body>
+</html>

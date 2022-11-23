@@ -9,7 +9,6 @@
 **__pycache__
 
 /static
-/templates
 *.zip
 /tmp
 /db
