@@ -30,10 +30,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "global.event",
                 'message': text_data
             })
-        destination = message["dest"]
+        elif(order == "new_robot"):
+            return channel_layer.group_send('global', {
+                "type": "global.event",
+                'message': text_data
+            })
+        destination = data.get("dest")
+        if(destination):
+            return channel_layer.group_send('global', {
+                "type": "global.event",
+                "room_id": destination,
+                'message': text_data
+            })
         return channel_layer.group_send('global', {
             "type": "global.event",
-            "room_id": destination,
             'message': text_data
         })
 
