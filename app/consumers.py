@@ -1,23 +1,37 @@
 import json
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 
 channel_layer = get_channel_layer()
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        async_to_sync(channel_layer.group_add)("global", self.channel_name)
-        self.accept()
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await channel_layer.group_add("global", self.channel_name)
+        await self.accept()
+        channel = self.channel_name
+        room = self.scope['url_route']["kwargs"]["room_name"]
+        print(f"[NEW_CONNECTION] {channel=}")
+        print(f"[NEW_CONNECTION] {room=}")
 
-    def disconnect(self, close_code):
+    async def disconnect(self, close_code):
+        channel = self.channel_name
+        room = self.scope['url_route']["kwargs"]["room_name"]
+        print(f"[DISCONNECTING] {channel=}")
+        print(f"[DISCONNECTING] {room=}")
         pass
 
-    def receive(self, text_data):
-        async_to_sync(channel_layer.group_send)('global', {
+    async def receive(self, text_data):
+        channel = self.channel_name
+        room = self.scope['url_route']["kwargs"]["room_name"]
+        print(f"[NEW_MESSAGE] {channel=}")
+        print(f"[NEW_MESSAGE] {room=}")
+        print(f"[NEW_MESSAGE] {text_data=}")
+        await channel_layer.group_send('global', {
         	"type": "global.event",
+            # "room_id": channel,
             'message': text_data
         })
 
-    def global_event(self, event):
-        self.send(text_data=event["message"])
+    async def global_event(self, event):
+        await self.send(text_data=event["message"])
+        print(f"[FORWADED] {text_data=}")
