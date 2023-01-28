@@ -22,7 +22,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         })
 
     async def disconnect(self, close_code):
-        pass
+        channel = self.channel_name.split("!")[1]
+        room = self.scope['url_route']["kwargs"]["room_name"]
+        if(room == "robot"):
+            await channel_layer.group_send("commander", {
+                "type": "global.event",
+                'message': json.dumps({
+                    "order": "robot_lost",
+                    "message": channel
+                })
+            })
 
     async def receive(self, text_data):
         room = self.scope['url_route']["kwargs"]["room_name"]
