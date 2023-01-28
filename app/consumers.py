@@ -28,25 +28,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         room = self.scope['url_route']["kwargs"]["room_name"]
         data = json.loads(text_data)
         order = data["order"]
-        print(f"[NEW MESSAGE] {data}")
+
+        destination = data.get("dest")
+        if(destination):
+            await channel_layer.group_send(destination, {
+                "type": "global.event",
+                'message': text_data
+            })
+            return
+
         if(order == "new_robot"):
-            return channel_layer.group_send('commander', {
+            await channel_layer.group_send('commander', {
                 "type": "global.event",
                 'message': text_data
             })
         elif(order == "new_commander"):
-            return channel_layer.group_send('robot', {
-                "type": "global.event",
-                'message': text_data
-            })
-
-        destination = data.get("dest")
-        if(destination):
-            return channel_layer.group_send(destination, {
+            await channel_layer.group_send('robot', {
                 "type": "global.event",
                 'message': text_data
             })
 
     async def global_event(self, event):
-        print(f"[SENDING] {event['message']}")
+        print(f"[SENDING] {event}")
         await self.send(text_data=event['message'])
